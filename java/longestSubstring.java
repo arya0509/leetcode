@@ -1,56 +1,23 @@
-import java.util.ArrayList;
 
 public class longestSubstring {
 
     static class Solution {
-        int len = 0;
 
         public int lengthOfLongestSubstring(String s) {
-            if (s.equals("")) {
-                return 0;
-            }
-            if (s.length() == 1) {
-                return 1;
-            }
-            char[] orignalStringArray = s.toCharArray();
-            ArrayList<String> possibleSubstrings = new ArrayList<String>();
+            int length = s.length();
+            int maxLength = 0;
+            int[] lastIndexValue = new int[128];
 
-            String subString = "";
-
-            for (int i = 0; i < orignalStringArray.length; i++) {
-                if (presentInSubstring(orignalStringArray[i], subString)) {
-                    possibleSubstrings.add(subString);
-
-                    subString = (len == subString.length() ? ""
-                            : subString.substring(len, subString.length())) + orignalStringArray[i];
-
-                    continue;
-                }
-                subString += orignalStringArray[i];
-                int index = i;
-                if (++index == orignalStringArray.length) {
-                    possibleSubstrings.add(subString);
-
-                }
+            for (int start = 0, end = 0; end < length; end++) {
+                char character = s.charAt(end);
+                start = Math.max(start, lastIndexValue[character]);
+                maxLength = Math.max(maxLength, end - start + 1);
+                lastIndexValue[character] = end + 1;
             }
 
-            possibleSubstrings.sort((a, b) -> Integer.compare(b.length(), a.length()));
-
-            int longestSubstring = possibleSubstrings.get(0).length();
-            return longestSubstring;
+            return maxLength;
         }
 
-        boolean presentInSubstring(char letter, String currSubstring) {
-            char[] StringArray = currSubstring.toCharArray();
-            len = 1;
-            for (char charact : StringArray) {
-                if (charact == letter) {
-                    return true;
-                }
-                len++;
-            }
-            return false;
-        }
     }
 
     public static void main(String[] args) {
