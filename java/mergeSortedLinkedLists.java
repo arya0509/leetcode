@@ -1,6 +1,9 @@
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class mergeSortedLinkedLists {
 
-    public class ListNode {
+    public static class ListNode {
         int val;
         ListNode next;
 
@@ -17,55 +20,68 @@ public class mergeSortedLinkedLists {
         }
     }
 
-    class Solution {
-        public ListNode mergeTwoLists(ListNode list1, ListNode list2) {
-            if (list1 == null && list2 == null) {
-                return list1;
-            }
-            if (list1 == null && list2 != null) {
-                return list2;
-            } else if (list2 == null && list1 != null) {
-                return list1;
-            }
-            ListNode head = list1.val >= list2.val ? list2 : list1;
-            ListNode largerNode = list1.val >= list2.val ? list1 : list2;
-            ListNode smallerNode = list1.val >= list2.val ? list2 : list1;
-            head.next = comp(largerNode, smallerNode.next);
+    public static void main(String[] args) {
+        ListNode node1 = new ListNode(1);
+        ListNode node2 = new ListNode(2);
+        ListNode node3 = new ListNode(4);
+        node1.next = node2;
+        node2.next = node3;
 
-            return head;
+        ListNode node11 = new ListNode(1);
+        ListNode node12 = new ListNode(3);
+        ListNode node13 = new ListNode(4);
+        node11.next = node12;
+        node12.next = node13;
 
-        }
-
-        public ListNode comp(ListNode A, ListNode B) {
-            if (A == null || B == null) {
-                if (A == null) {
-                    return B;
-                }
-                return A;
-            }
-
-            ListNode largerNode = A.val >= B.val ? A : B;
-            ListNode smallerNode = A.val >= B.val ? B : A;
-
-            smallerNode.next = comp(largerNode, smallerNode.next);
-            return smallerNode;
-
-        }
+        mergeTwoLists(node1, node11);
 
     }
 
-    public static void main(String[] args) {
-        mergeSortedLinkedLists msl = new mergeSortedLinkedLists();
-        Solution sol = msl.new Solution();
-
-        ListNode ln1 = msl.new ListNode(1);
-        ListNode ln2 = msl.new ListNode(2);
-
-        ListNode head = sol.mergeTwoLists(ln1, ln2);
-        while (head != null) {
-            System.out.println(head.val);
-            head = head.next;
+    public static ListNode mergeTwoLists(ListNode list1, ListNode list2) {
+        ArrayList<Integer> list = new ArrayList<>();
+        if (list1 == null && list2 == null) {
+            return null;
         }
 
+        while (list1 != null && list2 != null) {
+            if (list1.val < list2.val) {
+                list.add(list1.val);
+                list1 = list1.next;
+            } else if (list2.val < list1.val) {
+                list.add(list2.val);
+                list2 = list2.next;
+
+            } else {
+                list.add(list1.val);
+                list.add(list2.val);
+
+                list1 = list1.next;
+                list2 = list2.next;
+            }
+
+        }
+
+        ListNode remainingNode = list1 == null ? list2 : list1;
+
+        while (remainingNode != null) {
+            list.add(remainingNode.val);
+            remainingNode = remainingNode.next;
+        }
+
+        ListNode head = new ListNode();
+        ListNode output = head;
+
+        for (int i = 0; i < list.size(); i++) {
+            System.out.println(list.get(i));
+
+            output.val = list.get(i);
+            if (i + 1 != list.size()) {
+                output.next = new ListNode();
+
+            }
+            output = output.next;
+        }
+
+        return head;
     }
 }
