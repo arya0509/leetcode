@@ -1,5 +1,3 @@
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 
 public class inverBinaryTree {
     public class TreeNode {
@@ -21,9 +19,7 @@ public class inverBinaryTree {
         }
     }
 
-
     public TreeNode invertTree(TreeNode root) {
-
 
         if (root == null) {
             return null;
